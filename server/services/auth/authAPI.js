@@ -1,8 +1,12 @@
 const app = require('express')()
 
-app.route('/account')
+const authController = require('./authController')
+
+app.use('/account', authController)
+
+app.route('/login')
   .get((req, res) => {
-    res.send('test')
+    res.sendStatus(200)
   })
 
 module.exports = app

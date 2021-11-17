@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "nope",
   "main": "index.js",
+  "scripts": {
+    "serve": "npx kill-port 5001 && nodemon bin/www/server.js"
+  },
   "author": "devaholic",
   "license": "MIT",
   "dependencies": {
