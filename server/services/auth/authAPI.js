@@ -4,7 +4,8 @@ const authController = require('./authController')
 app.use('/account', authController)
 
 app.route('/login')
-  .get((req, res) => {
+  .post((req, res) => {
+    console.log(req)
     res.sendStatus(200)
   })
 
