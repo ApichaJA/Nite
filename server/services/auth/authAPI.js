@@ -1,5 +1,4 @@
 const app = require('express')()
-
 const authController = require('./authController')
 
 app.use('/account', authController)
