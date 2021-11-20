@@ -3,19 +3,14 @@ const bcrypt = require("bcrypt");
 
 const Account = require("../../models/account");
 
+const { getAllAccount, login } = require('./auth.service')
+
 router.get("/profile", (req, res) => {
+  const { id } = req.query
+
   res.send("Name: Yalo Age: 21 Sex: 2-3 per week");
 });
 
-router.get("/allAccount", (req, res) => {
-  Account.find()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
 
 router.post("/create_account", (req, res) => {
   const { username, password, firstname, lastname, role } = req.body;
@@ -43,28 +38,38 @@ router.post("/create_account", (req, res) => {
     });
 });
 
-router.post("/login", (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    res.sendStatus(401);
-  } else {
-    Account.findOne({ "account.username": username })
-      .then(async ({ account }) => {
-        const match = await bcrypt.compare(password, account.password);
-        if (match) {
-          res.sendStatus(200);
-        } else {
-          res.sendStatus(401);
-        }
-      })
-      .catch(() => {
-        res.sendStatus(401);
-      });
+const getAccounts = async (req, res) => {
+  try {
+    const data = await getAllAccount()
+
+    res.send(data)
+  } catch (e) {
+    res.status(500).send(e)
   }
-});
+}
 
-router.delete("/logout", (req, res) => {
-  res.sendStatus(200);
-});
+const accountLogin = async (req, res) => {
+  if (!req.body) {
+    res.status(500).send(new Error('FUCKKKKKKKKKKKK'))
+  }
 
-module.exports = router;
+  const { username, password } = req.body
+
+  try {
+    const loginStatus = await login(username, password)
+
+    res.send(loginStatus)
+  } catch (e) {
+    res.status(500).send(e)
+  }
+};
+
+const accountLogout = async () => {
+  return true
+}
+
+module.exports = {
+  getAccounts,
+  accountLogin,
+  accountLogout
+};
