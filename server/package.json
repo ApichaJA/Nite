@@ -3,11 +3,17 @@
   "version": "1.0.0",
   "description": "nope",
   "main": "index.js",
+  "scripts": {
+    "serve": "npx kill-port 5001 && nodemon bin/www/server.js"
+  },
   "author": "devaholic",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "mongodb": "^4.2.0",
+    "mongoose": "^6.0.13",
     "nodemon": "^2.0.15"
   }
 }
