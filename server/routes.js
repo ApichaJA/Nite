@@ -1,13 +1,7 @@
 const app = require('express')()
+const authAPI = require('./services/auth/authAPI')
 
-app.route('/test')
-  .get((req, res) => {
-    res.send('Hello, world!')
-  })
-  .post((req, res) => {
-    res.json({
-      text: req.body
-    })
-  })
+// http://localhost:5001/auth/{path in authAPI.js}
+app.use('/auth', authAPI)
 
 module.exports = app
