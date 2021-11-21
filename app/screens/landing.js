@@ -25,7 +25,7 @@ export default function login() {
         <PrimaryButton>
           ดำเนินการต่อโดยไม่เข้าสู่ระบบ
         </PrimaryButton>
-        <PrimaryButton isOutlined={true}>
+        <PrimaryButton isOutlined={true} style={{ marginBottom: 0 }}>
           เข้าสู่ระบบ
         </PrimaryButton>
 

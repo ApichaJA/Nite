@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#4D3B9B',
     fontFamily: 'Prompt_500Medium',
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
+    marginVertical: 0
   }
 });
 

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   primaryButtonOutlined: {
     backgroundColor: "#FFF",
     borderStyle: 'solid',
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: '#4D3B9B',
     width: '100%',
     borderRadius: 10,

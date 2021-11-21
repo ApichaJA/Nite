@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     backgroundColor: '#F1F0F9',
-    height: 2,
+    height: 1.5,
     flex: 1,
     alignSelf: 'center'
   },
