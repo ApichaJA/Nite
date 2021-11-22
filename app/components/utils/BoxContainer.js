@@ -17,9 +17,7 @@ const styles = StyleSheet.create({
   boxContainer: {
     maxWidth: 298,
     width: '100%',
-    margin: 20,
-    alignItems: 'center',
-    justifyContent: 'center'
+    margin: 20
   },
   headline: {
     fontFamily: 'Roboto_700Bold',
