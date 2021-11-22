@@ -9,7 +9,7 @@ export default function Register({ navigation: { navigate } }) {
   return (
     <View style={styles.container}>
       <BoxContainer title="Register">
-        <FormBox btnText='สมัครสมาชิก' />
+        <FormBox registered btnText='สมัครสมาชิก' />
       </BoxContainer>
     </View>
   )

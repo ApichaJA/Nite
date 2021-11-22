@@ -6,11 +6,11 @@ const createAccount = async (req, res) => {
   if (!req.body) {
     res.status(500).send(new Error('Empty Body'))
   }
-  try{
+  try {
     const createStatus = await create_account(req.body)
     res.send(createStatus)
   }
-  catch(e){
+  catch (e) {
     res.status(500).send(e)
   }
 };
@@ -25,11 +25,11 @@ const getAccounts = async (req, res) => {
 }
 
 const new_password = async (req, res) => {
-  try{
+  try {
     const resStatus = await renew_password(req.body)
     res.sendStatus(resStatus)
   }
-  catch(e){
+  catch (e) {
     res.status(500).send(e)
   }
 }
@@ -49,7 +49,7 @@ const accountLogin = async (req, res) => {
 
 const getProfileById = async (req, res) => {
   try {
-    const getStatus = await getProfile(req.query.uuid)
+    const getStatus = await getProfile(req.uuid)
     res.send(getStatus)
   } catch (e) {
     res.status(500).send(e)
