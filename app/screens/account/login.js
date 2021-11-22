@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Card, Title, Paragraph } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 
 import BoxContainer from '../../components/utils/BoxContainer';
 import FormBox from '../../components/utils/FormBox';

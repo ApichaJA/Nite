@@ -37,9 +37,7 @@ const FormBox = (props) => {
 
 const styles = StyleSheet.create({
   formContainer: {
-    flex: 1,
     width: '100%',
-    // justifyContent: 'flex-start'
   },
   inputStyles: {
     backgroundColor: '#F1F0F9',
