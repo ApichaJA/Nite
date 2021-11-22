@@ -39,12 +39,16 @@ const getMyNote = ({ uuid }) => {
 
 const new_note = (body) => {
   return new Promise((resolve, reject) => {
-    const { title, detail, author } = body;
+    const { title, detail, uuid, firstname, lastname } = body;
     const create_note = new Note({
       nid: uuidv4(),
       title,
       detail,
-      author
+      author: {
+        uuid,
+        firstname,
+        lastname
+      },
     });
     create_note
       .save()

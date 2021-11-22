@@ -15,9 +15,20 @@ const NoteSchema = new mongoose.Schema(
       required: true,
     },
     author: {
-      type: String,
-      require: true,
+      uuid: {
+        type: String,
+        require: true,
+      },
+      firstname: {
+        type: String,
+        require: true,
+      },
+      lastname: {
+        type: String,
+        require: true,
+      }
     },
+
   },
   { timestamps: true }
 );
