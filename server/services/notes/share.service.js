@@ -27,7 +27,7 @@ const getOneNote = (nid) => {
 
 const getMyNote = ({ uuid }) => {
   return new Promise((resolve, reject) => {
-    Note.find({author: uuid})
+    Note.find({ author: uuid })
       .then((result) => {
         resolve(result);
       })

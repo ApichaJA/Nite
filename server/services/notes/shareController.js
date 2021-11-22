@@ -3,17 +3,10 @@ const router = require("express").Router();
 const { getAllNote, getOneNote, getMyNote, new_note } = require('./share.service')
 
 const getNotes = async (req, res) => {
-  try {
-    const data = await getAllNote()
-    res.send(data)
-  } catch (e) {
-    res.status(500).send(e)
-  }
-}
+  const { nid } = req.query
 
-const getNote = async (req, res) => {
   try {
-    const data = await getOneNote(req.query.nid)
+    const data = !nid ? await getAllNote() : await getOneNote(nid)
     res.send(data)
   } catch (e) {
     res.status(500).send(e)
@@ -39,8 +32,7 @@ const createNote = async (req, res) => {
 }
 
 module.exports = {
-    getNotes,
-    getNote,
-    myNote,
-    createNote
+  getNotes,
+  myNote,
+  createNote
 };
