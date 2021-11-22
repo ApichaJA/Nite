@@ -2,15 +2,15 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Card, Title, Paragraph } from 'react-native-paper';
 
-export default function login() {
+import BoxContainer from '../../components/utils/BoxContainer';
+import FormBox from '../../components/utils/FormBox';
+
+export default function login({ navigation: { navigate } }) {
   return (
     <View style={styles.container}>
-      <Card>
-        <Card.Content>
-          <Title>Card title</Title>
-          <Paragraph>Card content</Paragraph>
-        </Card.Content>
-      </Card>
+      <BoxContainer title="Login">
+        <FormBox btnText='เข้าสู่ระบบ' />
+      </BoxContainer>
     </View>
   )
 }
@@ -19,7 +19,7 @@ export default function login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#4d3b9b',
+    backgroundColor: '#FFF',
     alignItems: 'center',
     justifyContent: 'center',
   },
