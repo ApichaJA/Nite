@@ -1,54 +1,50 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
 import { Card, Title, Paragraph } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel';
+import axios from 'axios';
 
-export default function Home() {
-  const items = [
-    {
-      title: "Item 1",
-      text: "Text 1",
-    },
-    {
-      title: "Item 2",
-      text: "Text 2",
-    },
-    {
-      title: "Item 3",
-      text: "Text 3",
-    },
-    {
-      title: "Item 4",
-      text: "Text 4",
-    },
-    {
-      title: "Item 5",
-      text: "Text 5",
-    },
-  ]
-  const [carouselItems, setCarouselItems] = useState(items)
+export default function Home({ navigation: { navigate } }) {
+
   const [activeIndex, setActiveIndex] = useState(0)
+  const [mockData, setMockData] = useState([])
 
-  let _renderItem = function ({ item, index }) {
+  let _renderItem = function ({ item }) {
     return (
-      <View style={{
-        backgroundColor: '#fff',
-        borderRadius: 5,
-        height: 250,
-        padding: 50,
-        marginLeft: 25,
-        marginRight: 25,
-      }}>
+      <TouchableOpacity
+        style={{
+          backgroundColor: '#F1F0F9',
+          borderRadius: 10,
+          height: 140,
+          flex: 1,
+          paddingHorizontal: 20,
+          paddingVertical: 30,
+          // marginLeft: 25,
+          marginRight: 25,
+        }}
+        onPress={() => navigate('Login')}
+      >
         <Text style={{ fontSize: 30 }}>{item.title}</Text>
-        <Text>{item.text}</Text>
-      </View>
-
+        <Text>{item.author.firstname} {item.author.lastname}</Text>
+      </TouchableOpacity>
     )
   }
+
+  useEffect(() => {
+    setInterval(() => {
+      axios.get('http://192.168.185.253:5001/share/notes')
+        .then(({ data }) => {
+          setMockData(data)
+          console.log(data)
+        })
+        .catch((e) => console.error(e))
+    }, 1000)
+  }, [])
 
   return (
     <View style={styles.container}>
       <ScrollView
+        swipeThreshold={10}
         scrollEventThrottle={200}
         directionalLockEnabled={true}
       >
@@ -57,16 +53,33 @@ export default function Home() {
           <Card style={styles.card}>
             <Card.Content>
               <Title style={styles.pageTitle}>โน๊ตล่าสุดจากเพื่อนๆ</Title>
-
               <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', }}>
                 <Carousel
                   layout={"default"}
-                  data={carouselItems}
+                  data={mockData}
                   sliderWidth={300}
                   itemWidth={300}
                   renderItem={_renderItem}
                   onSnapToItem={index => setActiveIndex(index)}
-                  enableSnap
+                  inactiveSlideScale={1}
+                  onPress={() => console.log(333)}
+                />
+              </View>
+            </Card.Content>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Content>
+              <Title style={styles.pageTitle}>โน๊ตของคุณ</Title>
+
+              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', }}>
+                <Carousel
+                  layout={"default"}
+                  data={mockData}
+                  sliderWidth={300}
+                  itemWidth={300}
+                  renderItem={_renderItem}
+                  onSnapToItem={index => setActiveIndex(index)}
+                  inactiveSlideScale={1}
                 />
               </View>
             </Card.Content>
@@ -83,9 +96,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF'
   },
   card: {
-    paddingVertical: 44
+    paddingVertical: 45
   },
   pageTitle: {
-    fontFamily: 'Prompt_500Medium'
+    flex: 1,
+    fontSize: 23,
+    fontFamily: 'Prompt_700Bold',
+    paddingBottom: 15
   }
 })

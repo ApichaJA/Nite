@@ -27,6 +27,11 @@ const FormBox = (props) => {
         onChangeText={password => setPassword(password)}
         secureTextEntry
       />
+      {
+        props.registered && (
+          <Text>test</Text>
+        )
+      }
       <PrimaryButton goTo={() => console.log(1)}>
         {props.btnText}
       </PrimaryButton>

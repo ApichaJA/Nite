@@ -17,7 +17,9 @@ const getAllAccount = () => {
 
 const getProfile = (uuid) => {
   return new Promise((resolve, reject) => {
-    Account.findOne({ "account.uuid": uuid })
+    Account.findOne({ "account.uuid": uuid }, {
+      "account.password": 0
+    })
       .then(async ({ account, profile }) => {
         resolve(Object.assign({ account }, { profile }));
       })
