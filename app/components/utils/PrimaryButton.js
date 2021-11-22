@@ -3,8 +3,11 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
+import { useNavigation } from '@react-navigation/native';
+
 const PrimaryButton = props => {
   const outlined = props.isOutlined || false
+  const navigation = useNavigation()
 
   return (
     <Button
@@ -15,6 +18,7 @@ const PrimaryButton = props => {
           styles.primaryButtonLabelOutlined
           : styles.primaryButtonLabel
       }
+      onPress={props.goTo}
     >
       {props.children}
     </Button>

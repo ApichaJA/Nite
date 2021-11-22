@@ -2,13 +2,16 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-paper';
 
-import BoxContainer from '../components/utils/boxContainer';
+import BoxContainer from '../components/utils/BoxContainer';
 import TextLogo from '../components/utils/TextLogo';
 import PrimaryButton from '../components/utils/PrimaryButton';
 import TextDivider from '../components/utils/TextDivider';
 import TextButton from '../components/utils/TextButton';
 
-export default function login() {
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+export default function landing({ navigation }) {
   return (
     <View style={styles.container}>
       {/* Logo */}
@@ -22,10 +25,16 @@ export default function login() {
       {/* Links box */}
       <BoxContainer style={styles.decisionBox}>
 
-        <PrimaryButton>
+        <PrimaryButton
+          goTo={() => navigation.navigate('Home')}
+        >
           ดำเนินการต่อโดยไม่เข้าสู่ระบบ
         </PrimaryButton>
-        <PrimaryButton isOutlined={true} style={{ marginBottom: 0 }}>
+        <PrimaryButton
+          isOutlined
+          style={{ marginBottom: 0 }}
+          goTo={() => navigation.navigate('Login')}
+        >
           เข้าสู่ระบบ
         </PrimaryButton>
 
@@ -33,7 +42,9 @@ export default function login() {
         <TextDivider text="หรือ" style={{ marginTop: 25, marginBottom: 25 }} />
 
         {/* Register Link */}
-        <TextButton>
+        <TextButton
+          underlined
+          goTo={() => navigation.navigate('Register')}>
           สมัครสมาชิกใหม่
         </TextButton>
       </BoxContainer>

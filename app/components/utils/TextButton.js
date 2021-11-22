@@ -7,7 +7,8 @@ const TextButton = props => {
 
   return (
     <Button
-      labelStyle={styles.buttonText}
+      labelStyle={[styles.buttonText, props.underlined && { textDecorationLine: 'underline' }]}
+      onPress={props.goTo}
     >
       {props.children}
     </Button>
@@ -19,7 +20,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#4D3B9B',
     fontFamily: 'Prompt_500Medium',
-    textDecorationLine: 'underline',
     marginVertical: 0
   }
 });

@@ -4,24 +4,27 @@ import AppLoading from 'expo-app-loading'
 import { StyleSheet, Text, View } from 'react-native';
 import {
   useFonts,
+  Roboto_300Light,
+  Roboto_400Regular,
+  Roboto_500Medium,
+  Roboto_700Bold
+} from '@expo-google-fonts/roboto'
+import {
   Prompt_200ExtraLight,
   Prompt_300Light,
   Prompt_400Regular,
   Prompt_500Medium,
   Prompt_600SemiBold,
   Prompt_700Bold,
-  Roboto_300Light,
-  Roboto_400Regular,
-  Roboto_500Medium,
-  Roboto_700Bold
-} from '@expo-google-fonts/dev'
+} from '@expo-google-fonts/prompt'
 
 import LandingScreen from './screens/landing'
 import RegisterScreen from './screens/account/register'
+import LoginScreen from './screens/account/login'
 import ProfileScreen from './screens/account/index'
+import HomeScreen from './screens/index'
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
@@ -42,7 +45,6 @@ export default function App() {
   })
 
   const Stack = createNativeStackNavigator();
-  const Tab = createMaterialBottomTabNavigator();
 
   if (!fontsLoaded) {
     return <AppLoading />
@@ -50,23 +52,41 @@ export default function App() {
   else {
     return (
       <NavigationContainer >
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="Nite">
           {userToken == null ? (
-            // No token found, user isn't signed in
-            <Stack.Screen
-              name="Login"
-              component={LandingScreen}
-              options={{
-                headerShown: false,
-                // When logging out, a pop animation feels intuitive
-                // You can remove this if you want the default 'push' animation
-                animationTypeForReplace: isSignOut ? 'pop' : 'push',
-              }}
-            />
+            <Stack.Group>
+              <Stack.Screen
+                name="Nite"
+                component={LandingScreen}
+                options={{
+                  headerShown: false,
+                  // When logging out, a pop animation feels intuitive
+                  // You can remove this if you want the default 'push' animation
+                  animationTypeForReplace: isSignOut ? 'pop' : 'push',
+                }}
+              />
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+              />
+              <Stack.Screen
+                name="Register"
+                component={RegisterScreen}
+              />
+            </Stack.Group>
           ) : (
-            // User is signed in
-            <Stack.Screen name="Home" component={ProfileScreen} />
+            <Stack.Group>
+              // User is signed in
+              <Stack.Screen name="Profile" component={ProfileScreen} />
+            </Stack.Group>
           )}
+
+          <Stack.Group>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+            />
+          </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>
     );

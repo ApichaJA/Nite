@@ -8,11 +8,13 @@ export default function Index() {
       <Card>
         <Card.Content>
           <Title>Home</Title>
-          <Paragraph>Card content</Paragraph>
+          <Paragraph>Cardกฟหดหก content</Paragraph>
         </Card.Content>
       </Card>
     </View>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+})

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   viewWrap: {
     justifyContent: 'center',
     flexDirection: 'row',
-    letterSpacing: '0.4em',
+    letterSpacing: 0.4,
     marginBottom: 17
   },
   textWrap: {
