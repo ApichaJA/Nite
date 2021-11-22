@@ -1,4 +1,6 @@
 const app = require('express')()
+const authenticateUser = require('../../lib/auth/verifyToken')
+
 const { getAccounts, accountLogin, accountLogout, createAccount, new_password, getProfileById } = require('./authController')
 
 app.route('/account')
@@ -13,7 +15,7 @@ app.post('/account/sign-up', createAccount) // log out route
 app.post('/account/re-password', new_password) // Change Password
 
 app.route('/account/profile')
-  .get(getProfileById) // get user profile (by id) get from req.query eg. /profile?id=6565
+  .get(authenticateUser, getProfileById) // get user profile (by id) get from req.query eg. /profile?id=6565
   .put() // edit user profile
   .delete() // remove user profile
 

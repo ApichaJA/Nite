@@ -1,15 +1,6 @@
 const router = require("express").Router();
 
-// const Account = require("../../models/account");
-
 const { getAllAccount, login, create_account, renew_password, getProfile } = require('./auth.service')
-
-router.get("/profile", (req, res) => {
-  const { id } = req.query
-
-  res.send("Name: Yalo Age: 21 Sex: 2-3 per week");
-});
-
 
 const createAccount = async (req, res) => {
   if (!req.body) {
