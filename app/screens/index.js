@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Button } from 'react-native'
 import { Card, Title, Paragraph } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { observer } from 'mobx-react-lite'
 import { authentication } from '../stores/Auth.service'
 import axios from 'axios';
+
 
 import Carousel from 'react-native-snap-carousel';
 import PrimaryButton from '../components/utils/PrimaryButton'
 
 export default observer(function Home({ navigation: { navigate } }) {
-
   const [activeIndex, setActiveIndex] = useState(0)
   const [mockData, setMockData] = useState([])
 
@@ -34,7 +35,7 @@ export default observer(function Home({ navigation: { navigate } }) {
           // marginLeft: 25,
           marginRight: 25,
         }}
-        onPress={() => true}
+        onPress={() => authentication.getProfile.uuid === item.author.uuid ? navigate('Edit Note', {item}) : navigate('View Note', {item})}
       >
         <Text style={{ fontSize: 30 }}>{item.title}</Text>
         <Text>{item.author.firstname} {item.author.lastname}</Text>
@@ -44,13 +45,12 @@ export default observer(function Home({ navigation: { navigate } }) {
 
   const getNotes = useCallback(async (id) => {
     try {
-      const { data: notesData } = await axios.get('http://192.168.185.253:5001/share/notes')
-      const myData = id && (await axios.get(`http://192.168.185.253:5001/share/my-notes?uuid=${id}`, {
+      const { data: notesData } = await axios.get('/share/notes')
+      const myData = id && (await axios.get(`/share/my-notes?uuid=${id}`, {
         headers: {
           Authorization: 'Bearer ' + authentication.getProfile.accessToken
         }
       })).data
-
       setAllNotes(notesData)
 
       if (id) setMyNotes(myData)
@@ -58,17 +58,17 @@ export default observer(function Home({ navigation: { navigate } }) {
       console.error(e)
     }
   }, [])
-
   useEffect(() => {
     const token = authentication.getProfile
     getNotes()
-
     if (token.accessToken) {
       setMyToken(token.accessToken)
       getNotes(token.uuid)
     }
 
   }, [])
+
+  // console.log(token)
 
   return (
     <View style={styles.container}>
@@ -100,8 +100,17 @@ export default observer(function Home({ navigation: { navigate } }) {
 
           <Card style={styles.card}>
             <Card.Content>
-              <Title style={styles.pageTitle}>โน๊ตของคุณ</Title>
-              {myNotes.length > 1 ? (
+              <View style={styles.noteBetween}>
+              <Title style={styles.pageTitle}>
+                โน๊ตของคุณ
+              </Title>
+                {myNotes.length > 0 ? (
+                  <PrimaryButton goTo={() => navigate('Create Note')} style={{ width: 140 }}>
+                  เพิ่มโน๊ต
+                </PrimaryButton>
+                ) : false}
+                </View>
+              {myNotes.length > 0 ? (
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', }}>
                   <Carousel
                     layout={"default"}
@@ -148,5 +157,9 @@ const styles = StyleSheet.create({
     fontSize: 23,
     fontFamily: 'Prompt_700Bold',
     paddingBottom: 15
+  },
+  noteBetween: {
+    flexDirection: "row",
+    flexWrap: "wrap",
   }
 })

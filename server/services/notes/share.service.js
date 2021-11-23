@@ -27,7 +27,7 @@ const getOneNote = (nid) => {
 
 const getMyNote = ({ uuid }) => {
   return new Promise((resolve, reject) => {
-    Note.find({ 'author.uuid': uuid })
+    Note.find({ "author.uuid": uuid })
       .then((result) => {
         resolve(result);
       })
@@ -47,11 +47,32 @@ const new_note = (body) => {
       author: {
         uuid,
         firstname,
-        lastname
+        lastname,
       },
     });
     create_note
       .save()
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(new Error(err));
+      });
+  });
+};
+
+const updateNote = (body) => {
+  return new Promise((resolve, reject) => {
+    const { title, detail, nid } = body;
+    edit_note = Note.updateOne(
+      { nid },
+      {
+        $set: {
+          title,
+          detail,
+        },
+      }
+    )
       .then((result) => {
         resolve(result);
       })
@@ -66,4 +87,5 @@ module.exports = {
   getOneNote,
   getMyNote,
   new_note,
+  updateNote,
 };

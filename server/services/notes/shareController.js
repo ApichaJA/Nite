@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const { getAllNote, getOneNote, getMyNote, new_note } = require('./share.service')
+const { getAllNote, getOneNote, getMyNote, new_note, updateNote } = require('./share.service')
 
 const getNotes = async (req, res) => {
   const { nid } = req.query
@@ -31,8 +31,18 @@ const createNote = async (req, res) => {
   }
 }
 
+const editNote = async (req, res) => {
+  try {
+    const data = await updateNote(req.body)
+    res.send(data)
+  } catch (e) {
+    res.status(500).send(e)
+  }
+}
+
 module.exports = {
   getNotes,
   myNote,
-  createNote
+  createNote,
+  editNote
 };

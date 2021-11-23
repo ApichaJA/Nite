@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react"
-import * as Network from 'expo-network'
+// import * as Network from 'expo-network'
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 
 import { observer } from 'mobx-react-lite'
 import { authentication } from '../../stores/Auth.service'
 
-import { StyleSheet, View, ScrollView, AsyncStorage } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 import PrimaryButton from "./PrimaryButton";
@@ -19,12 +19,12 @@ const FormBox = (props) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
 
-  const getIpAddress = async () => await Network.getIpAddressAsync();
-  const API = `http://${getIpAddress}:5001${props.apiPath}`
+  // const getIpAddress = async () => await Network.getIpAddressAsync();
+  // const API = `http://${getIpAddress}:5001${props.apiPath}`
 
   const register = async () => {
     try {
-      const { data, status } = await axios.post('http://192.168.185.253:5001/auth/account/sign-up', {
+      const { data, status } = await axios.post('/auth/account/sign-up', {
         username,
         password,
         firstname: firstName,
@@ -43,18 +43,19 @@ const FormBox = (props) => {
 
   const login = async () => {
     try {
-      const { data, status } = await axios.post('http://192.168.185.253:5001/auth/account/login', {
-        username,
-        password
+      const { data, status } = await axios.post('/auth/account/login', {
+        username: 'jap',
+        password: '123'
+        // username
+        // password
       })
-
       if (status === 200) {
         authentication.setProfile(data)
         navigation.navigate('Home')
       }
-
+      
     } catch (e) {
-      console.error(e)
+      console.log(e)
     }
   }
 
@@ -64,6 +65,7 @@ const FormBox = (props) => {
 
         <TextInput
           label="USERNAME"
+          underlineColor="transparent"
           value={username}
           placeholder="ชื่อผู้ใช้งาน"
           onChangeText={username => setUsername(username)}
@@ -71,6 +73,7 @@ const FormBox = (props) => {
         />
         <TextInput
           label="PASSWORD"
+          underlineColor="transparent"
           placeholder="รหัสผ่าน"
           value={password}
           style={styles.inputStyles}
@@ -89,6 +92,7 @@ const FormBox = (props) => {
 
         <TextInput
           label="FIRST NAME"
+          underlineColor="transparent"
           value={firstName}
           placeholder="ชื่อจริง"
           onChangeText={firstName => setFirstName(firstName)}
@@ -96,6 +100,7 @@ const FormBox = (props) => {
         />
         <TextInput
           label="LAST NAME"
+          underlineColor="transparent"
           value={lastName}
           placeholder="นามสกุล"
           onChangeText={lastName => setLastName(lastName)}
@@ -104,6 +109,7 @@ const FormBox = (props) => {
 
         <TextInput
           label="USERNAME"
+          underlineColor="transparent"
           value={username}
           placeholder="ชื่อผู้ใช้งาน"
           onChangeText={username => setUsername(username)}
@@ -111,6 +117,7 @@ const FormBox = (props) => {
         />
         <TextInput
           label="PASSWORD"
+          underlineColor="transparent"
           placeholder="รหัสผ่าน"
           value={password}
           style={styles.inputStyles}
@@ -132,7 +139,8 @@ const styles = StyleSheet.create({
   },
   inputStyles: {
     backgroundColor: '#F1F0F9',
-    marginBottom: 19
+    marginBottom: 19,
+    borderRadius: 10,
   }
 })
 
