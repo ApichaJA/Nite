@@ -33,6 +33,10 @@ export default observer(function View_Note({
         })
         .then(() => {
           alert("Update Successfully");
+
+          setTimeout(() => {
+            navigation.navigate('View Note', route.params)
+          }, 2000)
         });
     } catch (e) {
       console.error(e);
@@ -42,7 +46,7 @@ export default observer(function View_Note({
   useEffect(() => {
     setDetail(route.params.item.detail);
     setTitle(route.params.item.title);
-  }, []);
+  }, [route.params]);
   const token = authentication.getProfile;
   return (
     <View style={styles.container}>
@@ -86,13 +90,15 @@ export default observer(function View_Note({
 });
 
 const styles = StyleSheet.create({
+  card: {
+    paddingVertical: 44
+  },
   container: {
     flex: 1,
     // justifyContent: 'center',
     backgroundColor: "#FFF",
   },
   formContainer: {
-    height: "100%",
     width: "100%",
   },
   pageTitle: {
@@ -111,11 +117,12 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     backgroundColor: "#F1F0F9",
     flex: 1,
+    minHeight: 200,
     marginBottom: 40,
   },
   textAbove: {
     color: "#4D3B9B",
     marginBottom: 10,
-    fontWeight: "600",
-  },
+    fontFamily: 'Roboto_500Medium'
+  }
 });

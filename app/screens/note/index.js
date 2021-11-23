@@ -48,13 +48,13 @@ export default observer(function View_Note({
       `/service-comment/comment?uuid=${item.author.uuid}&nid=${item.nid}`
     );
     setPullComment(getComment.data);
-  }, []);
+  }, [route.params.item]);
   const GetComment = () => {
     const notecomment = pullComment.map((item, index) => {
-        const splitTime = item.createdAt.split("T")[1].split(".")
-        const day = item.createdAt.split("T")[0] || "-"
-        const time = item.createdAt.split("T")[1].split(".")[0] || "-"
-        console.log(splitTime)
+      const splitTime = item.createdAt.split("T")[1].split(".")
+      const day = item.createdAt.split("T")[0] || "-"
+      const time = item.createdAt.split("T")[1].split(".")[0] || "-"
+      console.log(splitTime)
       return (
         <View
           key={index}
@@ -92,11 +92,7 @@ export default observer(function View_Note({
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        swipeThreshold={10}
-        scrollEventThrottle={200}
-        directionalLockEnabled={true}
-      >
+      <ScrollView>
         <View>
           <Card style={styles.card}>
             <Card.Content>
@@ -114,8 +110,8 @@ export default observer(function View_Note({
               <View style={styles.textAreaStyles}>
                 <Text>{item.detail}</Text>
               </View>
-              <Text style={styles.textAbove}>แชร์</Text>
-              <View style={{ flexDirection: "row", marginBottom: 10 }}>
+              <Text style={[styles.textAbove, { marginTop: 10 }]}>แชร์</Text>
+              <View style={{ flexDirection: "row", marginBottom: 30 }}>
                 <Avatar.Icon
                   style={{ marginRight: 5 }}
                   icon="facebook"
@@ -163,7 +159,7 @@ export default observer(function View_Note({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 5,
+    paddingVertical: 44,
     backgroundColor: "#FFF",
   },
   formContainer: {
@@ -172,10 +168,10 @@ const styles = StyleSheet.create({
   },
   pageTitle: {
     flex: 1,
-    fontSize: 23,
+    fontSize: 24,
     marginTop: 10,
     fontFamily: "Prompt_700Bold",
-    paddingBottom: 15,
+    paddingBottom: 5,
   },
   textAreaStyles: {
     textAlignVertical: "top",
@@ -201,7 +197,7 @@ const styles = StyleSheet.create({
   },
   authorGroup: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "center"
   },
   textAbove: {
     marginBottom: 10,
@@ -211,5 +207,6 @@ const styles = StyleSheet.create({
   inputStyles: {
     backgroundColor: "#F1F0F9",
     marginBottom: 40,
+    minHeight: 150
   },
 });

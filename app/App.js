@@ -36,7 +36,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import axios from "axios";
 
-axios.defaults.baseURL = "http://192.168.1.129:5001";
+axios.defaults.baseURL = "http://192.168.138.253:5001";
 
 export default observer(function App() {
   const [userToken, setUserToken] = useState(null);
@@ -56,140 +56,85 @@ export default observer(function App() {
 
   useEffect(() => {
     const token = authentication.getProfile.accessToken;
-    setUserToken(token);
-  });
-  const Tab = createMaterialBottomTabNavigator();
+    token && setUserToken(token);
+
+    console.log(token)
+  }, []);
+  // const Tab = createMaterialBottomTabNavigator();
 
   const Stack = createNativeStackNavigator();
 
-  function HomeStack() {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name="View Note" component={NoteScreen} />
-        <Stack.Screen name="Edit Note" component={EditNoteScreen} />
-      </Stack.Navigator>
-    );
-  }
+  // function HomeStack() {
+  //   return (
+  //     <Stack.Navigator>
+  //       <Stack.Screen name="View Note" component={NoteScreen} />
+  //       <Stack.Screen name="Edit Note" component={EditNoteScreen} />
+  //     </Stack.Navigator>
+  //   );
+  // }
 
-  HomeStack.navigationOptions = ({ navigation }) => {
-    let tabBarVisible = navigation.state.routes[navigation.state.index].params.showTabBar; 
+  // HomeStack.navigationOptions = ({ navigation }) => {
+  //   let tabBarVisible = navigation.state.routes[navigation.state.index].params.showTabBar;
 
-    return {
-      tabBarVisible,
-    };
-};
+  //   return {
+  //     tabBarVisible,
+  //   };
+  // };
 
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
-    return true ? (
+    return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Nite">
-          {/* {!userToken ? ( */}
-          <Stack.Group>
-            <Stack.Screen
-              name="Nite"
-              component={LandingScreen}
-              options={{
-                headerShown: false,
-                // When logging out, a pop animation feels intuitive
-                // You can remove this if you want the default 'push' animation
-                animationTypeForReplace: isSignOut ? "pop" : "push",
-              }}
-            />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="Create Note" component={CreateNoteScreen} />
-            <Stack.Screen name="View Note" component={NoteScreen} />
-            <Stack.Screen name="Edit Note" component={EditNoteScreen} />
-          </Stack.Group>
-          {/* ) : (
-            <Stack.Group>
-
-            </Stack.Group>
-          )} */}
-
-          {/* <Stack.Group>
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-            />
-          </Stack.Group> */}
+        <Stack.Navigator initialRouteName={!userToken ? "Nite" : "Home"}>
+          {
+            !authentication.getProfile.accessToken ? (
+              <Stack.Group>
+                <Stack.Screen
+                  options={{
+                    headerShown: false,
+                    animationTypeForReplace: isSignOut ? "pop" : "push",
+                  }}
+                  name="Nite"
+                  component={LandingScreen}
+                />
+                <Stack.Screen
+                  options={{
+                    headerShown: false,
+                  }}
+                  name="Login"
+                  component={LoginScreen}
+                />
+                <Stack.Screen
+                  options={{
+                    headerShown: false,
+                  }}
+                  name="Register"
+                  component={RegisterScreen}
+                />
+                <Stack.Screen
+                  options={{
+                    headerShown: false,
+                  }}
+                  name="Home"
+                  component={HomeScreen}
+                />
+                <Stack.Screen name="View Note" component={NoteScreen} />
+              </Stack.Group>
+            ) : (
+              <Stack.Group>
+                <Stack.Screen
+                  name="Home"
+                  component={HomeScreen}
+                />
+                <Stack.Screen name="Create Note" component={CreateNoteScreen} />
+                <Stack.Screen name="View Note" component={NoteScreen} />
+                <Stack.Screen name="Edit Note" component={EditNoteScreen} />
+              </Stack.Group>
+            )
+          }
         </Stack.Navigator>
       </NavigationContainer>
-    ) : authentication.getProfile.accessToken ? (
-      <NavigationContainer>
-        <Tab.Navigator barStyle={{ backgroundColor: "#4D3B9B" }}>
-          <Tab.Screen
-            options={{
-              tabBarLabel: "Home",
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="home" color={color} size={26} />
-              ),
-            }}
-            name="Home"
-            component={HomeScreen}
-          />
-          <Tab.Screen
-            options={{
-              tabBarLabel: "Post",
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="post" color={color} size={26} />
-              ),
-            }}
-            name="Create Note"
-            component={CreateNoteScreen}
-          />
-          <Tab.Screen
-            options={{
-              tabBarLabel: "Profile",
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="human" color={color} size={26} />
-              ),
-            }}
-            name="Login"
-            component={LoginScreen}
-          />
-          <Tab.Screen name="View Note" component={HomeStack}/>
-        </Tab.Navigator>
-      </NavigationContainer>
-    ) : (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Nite">
-          <Stack.Group>
-            <Stack.Screen
-              options={{
-                headerShown: false,
-                animationTypeForReplace: isSignOut ? "pop" : "push",
-              }}
-              name="Nite"
-              component={LandingScreen}
-            />
-            <Stack.Screen
-              options={{
-                headerShown: false,
-              }}
-              name="Login"
-              component={LoginScreen}
-            />
-            <Stack.Screen
-              options={{
-                headerShown: false,
-              }}
-              name="Register"
-              component={RegisterScreen}
-            />
-            <Stack.Screen
-              options={{
-                headerShown: false,
-              }}
-              name="Home"
-              component={HomeScreen}
-            />
-          </Stack.Group>
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
+    )
   }
 });
