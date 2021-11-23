@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react"
-// import * as Network from 'expo-network'
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 
@@ -18,9 +17,6 @@ const FormBox = (props) => {
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
-
-  // const getIpAddress = async () => await Network.getIpAddressAsync();
-  // const API = `http://${getIpAddress}:5001${props.apiPath}`
 
   const register = async () => {
     try {
@@ -44,16 +40,14 @@ const FormBox = (props) => {
   const login = async () => {
     try {
       const { data, status } = await axios.post('/auth/account/login', {
-        username: 'jap',
-        password: '123'
-        // username
-        // password
+        username,
+        password
       })
       if (status === 200) {
         authentication.setProfile(data)
         navigation.navigate('Home')
       }
-      
+
     } catch (e) {
       console.log(e)
     }

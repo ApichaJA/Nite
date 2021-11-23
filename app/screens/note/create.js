@@ -13,7 +13,6 @@ import { observer } from "mobx-react-lite";
 import { authentication } from "../../stores/Auth.service";
 import axios from "axios";
 
-import Carousel from "react-native-snap-carousel";
 import PrimaryButton from "../../components/utils/PrimaryButton";
 
 export default observer(function New_note({ navigation: { navigate } }) {
@@ -23,7 +22,7 @@ export default observer(function New_note({ navigation: { navigate } }) {
   const [detail, setDetail] = useState("");
 
   const create_note = async () => {
-    const {uuid, profile} = authentication.getProfile
+    const { uuid, profile } = authentication.getProfile
     try {
       await axios.post('/share/my-notes', {
         title,
@@ -32,9 +31,11 @@ export default observer(function New_note({ navigation: { navigate } }) {
         firstname: profile.firstname,
         lastname: profile.lastname
       })
-      .then(() => {
-        navigation.navigate('Home')
-      })
+        .then(({ status }) => {
+          if (status === 200) {
+            navigation.navigate('Home')
+          }
+        })
 
     } catch (e) {
       console.error(e)
@@ -53,23 +54,23 @@ export default observer(function New_note({ navigation: { navigate } }) {
             <Card.Content>
               <Title style={styles.pageTitle}>เพิ่มโน๊ตใหม่</Title>
               <View style={styles.formContainer}>
-              <Text style={styles.textAbove}>Note Title</Text>
+                <Text style={styles.textAbove}>Note Title</Text>
                 <TextInput
-                  label="ชื่อโน็ต"
+                  label="ชื่อโน๊ต"
                   value={title}
                   onChangeText={(title) => setTitle(title)}
                   style={styles.inputStyles}
                 />
-              <Text style={styles.textAbove}>Note Detail</Text>
+                <Text style={styles.textAbove}>Note Detail</Text>
                 <TextInput
-                label="รายละเอียดโน็ต"
+                  label="รายละเอียดโน๊ต"
                   multiline={true}
                   value={detail}
                   style={styles.inputAreaStyles}
                   onChangeText={(detail) => setDetail(detail)}
                   secureTextEntry
                 />
-        <PrimaryButton goTo={() => create_note()}>บันทึกโน็ต</PrimaryButton>
+                <PrimaryButton goTo={() => create_note()}>บันทึกโน็ต</PrimaryButton>
               </View>
             </Card.Content>
           </Card>
@@ -80,13 +81,16 @@ export default observer(function New_note({ navigation: { navigate } }) {
 });
 
 const styles = StyleSheet.create({
+  card: {
+    paddingVertical: 44
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: "#FFF",
   },
   formContainer: {
-    height: "100%",
+    // height: "100%",
     width: "100%",
   },
   pageTitle: {
@@ -105,11 +109,12 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     backgroundColor: "#F1F0F9",
     flex: 1,
+    minHeight: 200,
     marginBottom: 40,
   },
-  textAbove:{
+  textAbove: {
     color: "#4D3B9B",
     marginBottom: 10,
-    fontWeight: '600'
+    fontFamily: 'Roboto_500Medium'
   }
 });

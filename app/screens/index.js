@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Button } from 'react-native'
-import { Card, Title, Paragraph } from 'react-native-paper';
+
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
+import { Card, Title, Paragraph, FAB } from 'react-native-paper';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { observer } from 'mobx-react-lite'
 import { authentication } from '../stores/Auth.service'
 import axios from 'axios';
-
 
 import Carousel from 'react-native-snap-carousel';
 import PrimaryButton from '../components/utils/PrimaryButton'
@@ -28,17 +29,19 @@ export default observer(function Home({ navigation: { navigate } }) {
         style={{
           backgroundColor: '#F1F0F9',
           borderRadius: 10,
-          height: 140,
+          height: 230,
           flex: 1,
           paddingHorizontal: 20,
           paddingVertical: 30,
-          // marginLeft: 25,
           marginRight: 25,
         }}
-        onPress={() => authentication.getProfile.uuid === item.author.uuid ? navigate('Edit Note', {item}) : navigate('View Note', {item})}
+        onPress={() => authentication.getProfile.uuid === item.author.uuid ? navigate('Edit Note', { item }) : navigate('View Note', { item })}
       >
-        <Text style={{ fontSize: 30 }}>{item.title}</Text>
-        <Text>{item.author.firstname} {item.author.lastname}</Text>
+        <Text numberOfLines={2} style={{ fontSize: 28, fontFamily: 'Prompt_700Bold' }}>{item.title}</Text>
+        <Text numberOfLines={2} style={{ fontSize: 16, paddingVertical: 8, fontFamily: 'Prompt_300Light', color: '#8880cc' }}>
+          {item.detail}
+        </Text>
+        <Text style={{ fontFamily: 'Prompt_500Medium' }}>{item.author.firstname} {item.author.lastname}</Text>
       </TouchableOpacity>
     )
   }
@@ -51,6 +54,7 @@ export default observer(function Home({ navigation: { navigate } }) {
           Authorization: 'Bearer ' + authentication.getProfile.accessToken
         }
       })).data
+
       setAllNotes(notesData)
 
       if (id) setMyNotes(myData)
@@ -58,17 +62,20 @@ export default observer(function Home({ navigation: { navigate } }) {
       console.error(e)
     }
   }, [])
+
   useEffect(() => {
     const token = authentication.getProfile
-    getNotes()
-    if (token.accessToken) {
-      setMyToken(token.accessToken)
-      getNotes(token.uuid)
-    }
+    token && setMyToken(token.accessToken)
 
-  }, [])
+    setInterval(() => {
+      getNotes()
 
-  // console.log(token)
+      if (token.accessToken) {
+        getNotes(token.uuid)
+      }
+    }, 1000)
+
+  }, [getNotes, myToken])
 
   return (
     <View style={styles.container}>
@@ -98,18 +105,14 @@ export default observer(function Home({ navigation: { navigate } }) {
             </Card>
           )}
 
-          <Card style={styles.card}>
+          {myToken && (<Card style={styles.card}>
             <Card.Content>
               <View style={styles.noteBetween}>
-              <Title style={styles.pageTitle}>
-                โน๊ตของคุณ
-              </Title>
-                {myNotes.length > 0 ? (
-                  <PrimaryButton goTo={() => navigate('Create Note')} style={{ width: 140 }}>
-                  เพิ่มโน๊ต
-                </PrimaryButton>
-                ) : false}
-                </View>
+                <Title style={styles.pageTitle}>
+                  โน๊ตของคุณ
+                </Title>
+              </View>
+
               {myNotes.length > 0 ? (
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', }}>
                   <Carousel
@@ -132,9 +135,18 @@ export default observer(function Home({ navigation: { navigate } }) {
               )}
 
             </Card.Content>
-          </Card>
+          </Card>)}
         </View>
       </ScrollView>
+
+      {myToken && (
+        <FAB
+          style={styles.fab}
+          icon="plus"
+          color="#DBD7EB"
+          onPress={() => navigate('Create Note')}
+        />
+      )}
     </View>
   )
 })
@@ -144,8 +156,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF'
   },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#4D3B9B'
+  },
   card: {
-    paddingVertical: 45
+    paddingVertical: 20
   },
   noNotesContainer: {
     flex: 1,
