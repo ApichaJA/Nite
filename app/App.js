@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppLoading from 'expo-app-loading'
 import { StyleSheet, Text, View } from 'react-native';
 import {
@@ -21,14 +21,17 @@ import {
 import LandingScreen from './screens/landing'
 import RegisterScreen from './screens/account/register'
 import LoginScreen from './screens/account/login'
-import ProfileScreen from './screens/account/index'
+import CreateNoteScreen from './screens/note/create'
 import HomeScreen from './screens/index'
+
+import { observer } from 'mobx-react-lite'
+import { authentication } from './stores/Auth.service'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
-export default function App() {
+export default observer(function App() {
   const [userToken, setUserToken] = useState(null)
   const [isSignOut, setIsSignOut] = useState(true)
   let [fontsLoaded] = useFonts({
@@ -44,6 +47,11 @@ export default function App() {
     Roboto_700Bold
   })
 
+  useEffect(() => {
+    const token = authentication.getProfile.accessToken
+    setUserToken(token)
+  })
+
   const Stack = createNativeStackNavigator();
 
   if (!fontsLoaded) {
@@ -53,7 +61,7 @@ export default function App() {
     return (
       <NavigationContainer >
         <Stack.Navigator initialRouteName="Nite">
-          {userToken == null ? (
+          {userToken === null ? (
             <Stack.Group>
               <Stack.Screen
                 name="Nite"
@@ -73,22 +81,29 @@ export default function App() {
                 name="Register"
                 component={RegisterScreen}
               />
+
             </Stack.Group>
           ) : (
             <Stack.Group>
-              // User is signed in
-              <Stack.Screen name="Profile" component={ProfileScreen} />
+              <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+              />
+              <Stack.Screen
+                name="Create Note"
+                component={CreateNoteScreen}
+              />
             </Stack.Group>
           )}
 
-          <Stack.Group>
+          {/* <Stack.Group>
             <Stack.Screen
               name="Home"
               component={HomeScreen}
             />
-          </Stack.Group>
+          </Stack.Group> */}
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
-}
+})

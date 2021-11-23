@@ -36,7 +36,7 @@ const login = (username, password) => {
         const match = await bcrypt.compare(password, account.password);
         if (match) {
           const token = generateUserToken(account, profile, role);
-          resolve(Object.assign({ profile }, { role }, { accessToken: token }));
+          resolve(Object.assign({ uuid: account.uuid }, { profile }, { role }, { accessToken: token }));
         } else {
           reject("Password is not correct!");
         }
@@ -75,12 +75,12 @@ const create_account = (body) => {
 
             create_account
               .save()
-              .then((result) => {
-                resolve(result);
+              .then(() => {
+                resolve(login(username, password))
               })
               .catch((err) => {
                 reject(new Error(err));
-              });
+              })
           } else {
             reject("Username already exists!");
           }
