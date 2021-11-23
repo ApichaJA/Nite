@@ -2,6 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import AppLoading from "expo-app-loading";
 import { StyleSheet, Text, View } from "react-native";
+import { BottomNavigation } from "react-native-paper";
+
 import {
   useFonts,
   Roboto_300Light,
@@ -38,9 +40,19 @@ import axios from "axios";
 
 axios.defaults.baseURL = "http://192.168.138.253:5001";
 
+const FavNotes = () => <Text>Favorite Notes</Text>
+
 export default observer(function App() {
   const [userToken, setUserToken] = useState(null);
   const [isSignOut, setIsSignOut] = useState(true);
+
+  const [navIndex, setNavIndex] = React.useState(0);
+  const [routes] = useState([
+    { key: 'home', title: 'Home', icon: 'home' },
+    { key: 'newNote', title: 'Create Note', icon: 'plus' },
+    { key: 'favNotes', title: 'Favorite Notes', icon: 'star' }
+  ])
+
   let [fontsLoaded] = useFonts({
     Prompt_200ExtraLight,
     Prompt_300Light,
@@ -54,32 +66,57 @@ export default observer(function App() {
     Roboto_700Bold,
   });
 
+  const renderScene = BottomNavigation.SceneMap({
+    home: HomeScreen,
+    newNote: CreateNoteScreen,
+    favNotes: FavNotes
+  })
+
   useEffect(() => {
     const token = authentication.getProfile.accessToken;
     token && setUserToken(token);
 
     console.log(token)
   }, []);
-  // const Tab = createMaterialBottomTabNavigator();
 
   const Stack = createNativeStackNavigator();
+  const Tab = createMaterialBottomTabNavigator();
 
-  // function HomeStack() {
-  //   return (
-  //     <Stack.Navigator>
-  //       <Stack.Screen name="View Note" component={NoteScreen} />
-  //       <Stack.Screen name="Edit Note" component={EditNoteScreen} />
-  //     </Stack.Navigator>
-  //   );
-  // }
-
-  // HomeStack.navigationOptions = ({ navigation }) => {
-  //   let tabBarVisible = navigation.state.routes[navigation.state.index].params.showTabBar;
-
-  //   return {
-  //     tabBarVisible,
-  //   };
-  // };
+  const AuthenticatedTabs = () => {
+    return (
+      <Tab.Navigator
+        barStyle={{ backgroundColor: '#4D3B9B' }}
+      >
+        <Tab.Screen
+          name="Notes"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="note-multiple" color={color} size={26} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Create Note"
+          component={CreateNoteScreen}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="plus" color={color} size={26} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Favorite Notes"
+          component={FavNotes}
+          options={{
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="star" color={color} size={26} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    )
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -123,11 +160,7 @@ export default observer(function App() {
               </Stack.Group>
             ) : (
               <Stack.Group>
-                <Stack.Screen
-                  name="Home"
-                  component={HomeScreen}
-                />
-                <Stack.Screen name="Create Note" component={CreateNoteScreen} />
+                <Stack.Screen name="Home" component={AuthenticatedTabs} />
                 <Stack.Screen name="View Note" component={NoteScreen} />
                 <Stack.Screen name="Edit Note" component={EditNoteScreen} />
               </Stack.Group>
