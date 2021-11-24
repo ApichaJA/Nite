@@ -9,24 +9,24 @@ const Favorite = (props) => {
 
   useEffect(() => {
     setFavorites([{
-      title: 'oop',
-      content: 'allllll',
-      author: 'NULL POINTER'
+      title: 'Object Oriented Programming',
+      content: 'Object-oriented programming (OOP) is a computer programming model that organizes software design around data, or objects, rather than functions and logic',
+      author: 'Ratchapol Peet'
     },
     {
-      title: 'mobile',
-      content: 'arrrrrrrh',
-      author: 'Peet'
+      title: 'Mobile Device Programming',
+      content: 'A mobile application, also referred to as a mobile app or simply an app, is a computer program or software application designed to run on a mobile device such as a phone, tablet, or watch.',
+      author: 'Japan Apicha'
     },
     {
-      title: 'mobile',
-      content: 'arrrrrrrh',
-      author: 'Peet'
+      title: 'Python 101',
+      content: 'Python is an interpreted high-level general-purpose programming language.',
+      author: 'Arm Phattarakorn'
     },
     {
-      title: 'mobile',
-      content: 'arrrrrrrh',
-      author: 'Peet'
+      title: 'Requirement Engineering 101',
+      content: 'Requirements engineering (RE) is the process of defining, documenting, and maintaining requirements in the engineering design process.',
+      author: 'Yenura'
     },
     ])
   }, [])

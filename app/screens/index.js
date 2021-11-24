@@ -38,7 +38,7 @@ export default observer(function Home({ navigation: { navigate } }) {
         onPress={() => authentication.getProfile.uuid === item.author.uuid ? navigate('Edit Note', { item }) : navigate('View Note', { item })}
       >
         <Text numberOfLines={2} style={{ fontSize: 28, fontFamily: 'Prompt_700Bold' }}>{item.title}</Text>
-        <Text numberOfLines={2} style={{ fontSize: 16, paddingVertical: 8, fontFamily: 'Prompt_300Light', color: '#8880cc' }}>
+        <Text numberOfLines={2} style={{ fontSize: 16, paddingVertical: 8, fontFamily: 'Prompt_400Regular', color: '#8880cc' }}>
           {item.detail}
         </Text>
         <Text style={{ fontFamily: 'Prompt_500Medium' }}>{item.author.firstname} {item.author.lastname}</Text>
