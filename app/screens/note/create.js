@@ -14,6 +14,8 @@ import { authentication } from "../../stores/Auth.service";
 import axios from "axios";
 
 import PrimaryButton from "../../components/utils/PrimaryButton";
+// import DrawCanva from "./drawing";
+
 
 export default observer(function New_note({ navigation: { navigate } }) {
   const navigation = useNavigation()
@@ -44,6 +46,7 @@ export default observer(function New_note({ navigation: { navigate } }) {
 
   return (
     <View style={styles.container}>
+      {/* <DrawCanva/> */}
       <ScrollView
         swipeThreshold={10}
         scrollEventThrottle={200}
