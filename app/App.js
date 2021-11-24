@@ -75,7 +75,7 @@ export default observer(function App() {
     const token = authentication.getProfile.accessToken;
     token && setUserToken(token);
 
-    console.log(token)
+    // console.log(token)
   }, []);
 
   const Stack = createNativeStackNavigator();
