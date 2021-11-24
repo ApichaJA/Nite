@@ -27,6 +27,7 @@ import CreateNoteScreen from "./screens/note/create";
 import HomeScreen from "./screens/index";
 import NoteScreen from "./screens/note/index";
 import EditNoteScreen from "./screens/note/edit";
+import FavoriteScreen from "./screens/favorite";
 
 import { observer } from "mobx-react-lite";
 import { authentication } from "./stores/Auth.service";
@@ -38,9 +39,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import axios from "axios";
 
-axios.defaults.baseURL = "http://192.168.1.129:5001";
-
-const FavNotes = () => <Text>Favorite Notes</Text>
+axios.defaults.baseURL = "http://192.168.0.101:5001";
 
 export default observer(function App() {
   const [userToken, setUserToken] = useState(null);
@@ -69,7 +68,7 @@ export default observer(function App() {
   const renderScene = BottomNavigation.SceneMap({
     home: HomeScreen,
     newNote: CreateNoteScreen,
-    favNotes: FavNotes
+    favNotes: FavoriteScreen
   })
 
   useEffect(() => {
@@ -107,7 +106,7 @@ export default observer(function App() {
         />
         <Tab.Screen
           name="Favorite Notes"
-          component={FavNotes}
+          component={FavoriteScreen}
           options={{
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="star" color={color} size={26} />

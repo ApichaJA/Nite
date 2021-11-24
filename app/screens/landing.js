@@ -1,15 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { Button } from 'react-native-paper';
 
 import BoxContainer from '../components/utils/BoxContainer';
 import TextLogo from '../components/utils/TextLogo';
 import PrimaryButton from '../components/utils/PrimaryButton';
 import TextDivider from '../components/utils/TextDivider';
 import TextButton from '../components/utils/TextButton';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function landing({ navigation }) {
   return (
