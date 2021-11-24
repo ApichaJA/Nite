@@ -54,7 +54,6 @@ export default observer(function View_Note({
       const splitTime = item.createdAt.split("T")[1].split(".")
       const day = item.createdAt.split("T")[0] || "-"
       const time = item.createdAt.split("T")[1].split(".")[0] || "-"
-      console.log(splitTime)
       return (
         <View
           key={index}
