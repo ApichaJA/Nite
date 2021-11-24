@@ -23,6 +23,7 @@ export default observer(function View_Note({
   const [item, setItem] = useState(route.params.item);
   const [comment, setComment] = useState("");
   const [pullComment, setPullComment] = useState([]);
+
   const comment_note = async () => {
     try {
       await axios

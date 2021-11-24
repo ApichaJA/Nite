@@ -17,7 +17,7 @@ const Box = (props) => {
         {subTitle}
       </Subheading>
 
-      <Paragraph numberOfLines={2} style={{ fontSize: 16, paddingVertical: 8, fontFamily: 'Prompt_300Light', color: '#8880cc' }}>
+      <Paragraph numberOfLines={2} style={{ fontSize: 16, paddingBottom: 8, fontFamily: 'Prompt_300Light', color: '#8880cc' }}>
         {props.children}
       </Paragraph>
 
@@ -35,8 +35,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 20,
     paddingVertical: 30,
+    minHeight: 230,
     backgroundColor: '#F1F0F9',
-    marginVertical: 10
+    marginVertical: 10,
+    justifyContent: 'flex-start'
   }
 })
 

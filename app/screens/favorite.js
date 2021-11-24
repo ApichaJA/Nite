@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
 
 import BoxContainer from '../components/utils/BoxContainer';
 import Box from '../components/utils/Box';
@@ -51,10 +51,10 @@ const Favorite = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
     width: '100%',
     paddingHorizontal: 20,
     paddingVertical: 40,
-    marginBottom: 40,
     backgroundColor: '#fff'
   }
 })
