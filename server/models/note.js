@@ -28,6 +28,10 @@ const NoteSchema = new mongoose.Schema(
         require: true,
       }
     },
+    url: {
+      type: String,
+      required: true,
+    },
 
   },
   { timestamps: true }

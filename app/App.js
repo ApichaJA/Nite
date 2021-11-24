@@ -39,7 +39,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import axios from "axios";
 
-axios.defaults.baseURL = "http://192.168.0.101:5001";
+axios.defaults.baseURL = "http://192.168.1.129:5001";
 
 export default observer(function App() {
   const [userToken, setUserToken] = useState(null);

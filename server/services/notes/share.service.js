@@ -37,9 +37,10 @@ const getMyNote = ({ uuid }) => {
   });
 };
 
-const new_note = (body) => {
+const new_note = (body, file) => {
   return new Promise((resolve, reject) => {
-    const { title, detail, uuid, firstname, lastname } = body;
+    const { title, detail, uuid, firstname, lastname, url } = body;
+    console.log(file)
     const create_note = new Note({
       nid: uuidv4(),
       title,
@@ -49,6 +50,7 @@ const new_note = (body) => {
         firstname,
         lastname,
       },
+      url: url ? url: ''
     });
     create_note
       .save()
