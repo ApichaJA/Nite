@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import AppLoading from "expo-app-loading";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { BottomNavigation } from "react-native-paper";
 
 import {
@@ -51,6 +51,7 @@ export default observer(function App() {
     { key: 'newNote', title: 'Create Note', icon: 'plus' },
     { key: 'favNotes', title: 'Favorite Notes', icon: 'star' }
   ])
+  const [isPress, setIsPress] = useState(false);
 
   let [fontsLoaded] = useFonts({
     Prompt_200ExtraLight,
@@ -71,11 +72,17 @@ export default observer(function App() {
     favNotes: FavoriteScreen
   })
 
+  const addFav = async () => {
+    // const { data } = await axios.get(`/favorite/my-favorite?nid=${}&uuid=${authentication.getProfile.account.uuid}`)
+
+    // return data
+  }
+
   useEffect(() => {
     const token = authentication.getProfile.accessToken;
     token && setUserToken(token);
 
-    // console.log(token)
+
   }, []);
 
   const Stack = createNativeStackNavigator();
@@ -90,6 +97,7 @@ export default observer(function App() {
           name="Notes"
           component={HomeScreen}
           options={{
+            title: 'Notes',
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="note-multiple" color={color} size={26} />
             ),
@@ -99,6 +107,7 @@ export default observer(function App() {
           name="Create Note"
           component={CreateNoteScreen}
           options={{
+            title: 'Create Note',
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="plus" color={color} size={26} />
             ),
@@ -108,6 +117,7 @@ export default observer(function App() {
           name="Favorite Notes"
           component={FavoriteScreen}
           options={{
+            title: 'Favorite Notes',
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="star" color={color} size={26} />
             ),
@@ -125,7 +135,7 @@ export default observer(function App() {
         <Stack.Navigator initialRouteName={!userToken ? "Nite" : "Home"}>
           {
             !authentication.getProfile.accessToken ? (
-              <Stack.Group>
+              <Stack.Group screenOptions={{ headerTintColor: '#fefeff', headerStyle: { backgroundColor: '#4D3B9B' }, headerTitleStyle: { color: '#fefeff' }, headerBackTitleStyle: { color: '#fefeff' } }}>
                 <Stack.Screen
                   options={{
                     headerShown: false,
@@ -158,9 +168,25 @@ export default observer(function App() {
                 <Stack.Screen name="View Note" component={NoteScreen} />
               </Stack.Group>
             ) : (
-              <Stack.Group>
-                <Stack.Screen name="Home" component={AuthenticatedTabs} />
-                <Stack.Screen name="View Note" component={NoteScreen} />
+              <Stack.Group screenOptions={{ headerTintColor: '#fefeff', headerStyle: { backgroundColor: '#4D3B9B' }, headerTitleStyle: { color: '#fefeff' }, headerBackTitleStyle: { color: '#fefeff' } }}>
+                <Stack.Screen
+                  name="Home"
+                  component={AuthenticatedTabs}
+                />
+                <Stack.Screen name="View Note"
+                  component={NoteScreen}
+                  options={{
+                    headerRight: ({ color }) => (
+                      <TouchableOpacity onPress={() => setIsPress(!isPress)}>
+                        <MaterialCommunityIcons
+                          name="star"
+                          color={!isPress ? "#fefeff" : 'yellow'}
+                          size={26}
+                        />
+                      </TouchableOpacity>
+                    )
+                  }}
+                />
                 <Stack.Screen name="Edit Note" component={EditNoteScreen} />
               </Stack.Group>
             )
