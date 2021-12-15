@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 
 const getAllNote = () => {
   return new Promise((resolve, reject) => {
-    Note.find()
+    Note.find().limit(5).sort( { updatedAt: -1 } )
       .then((result) => {
         resolve(result);
       })
@@ -38,12 +38,13 @@ const getMyNote = ({ uuid }) => {
 };
 
 const new_note = (body) => {
-  return new Promise((resolve, reject) => {
-    const { title, detail, uuid, firstname, lastname } = body;
+  return new Promise(async (resolve, reject) => {
+    const { title, detail, uuid, fileUrl, firstname, lastname } = body;
     const create_note = new Note({
       nid: uuidv4(),
       title,
       detail,
+      filePdf: fileUrl,
       author: {
         uuid,
         firstname,

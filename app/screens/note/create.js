@@ -7,46 +7,71 @@ import {
   TouchableOpacity,
   Button,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { Card, Title, Paragraph, TextInput } from "react-native-paper";
 import { observer } from "mobx-react-lite";
 import { authentication } from "../../stores/Auth.service";
 import axios from "axios";
 
-import PrimaryButton from "../../components/utils/PrimaryButton";
-// import DrawCanva from "./drawing";
+import { addFile } from "./firebase"
 
+import * as DocumentPicker from "expo-document-picker";
+
+import PrimaryButton from "../../components/utils/PrimaryButton";
 
 export default observer(function New_note({ navigation: { navigate } }) {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const [title, setTitle] = useState("");
+  const [fileUploadPdf, setFilePdf] = useState(null);
+  const [fileBlob, setFileBlob] = useState([]);
   const [detail, setDetail] = useState("");
 
-  const create_note = async () => {
-    const { uuid, profile } = authentication.getProfile
-    try {
-      await axios.post('/share/my-notes', {
-        title,
-        detail,
-        uuid,
-        firstname: profile.firstname,
-        lastname: profile.lastname
-      })
-        .then(({ status }) => {
-          if (status === 200) {
-            navigation.navigate('Home')
-          }
-        })
+  const getPdf = async () => {
+    const filePdf = await DocumentPicker.getDocumentAsync({
+      copyToCacheDirectory: false,
+      type: "application/pdf"
+    })
+
+    setFilePdf(filePdf)
+    uploadFile(filePdf)
+  }
+
+  const uploadFile = async (filePdf) => {
+    try{
+      let blob = null
+      const fetchResponse = await fetch(filePdf.uri)
+      blob = await fetchResponse.blob()
+      setFileBlob(blob)
 
     } catch (e) {
-      console.error(e)
+      alert('Upload pdf fail')
+      console.log(e)
+    }
+  }
+
+  const create_note = async () => {
+    const { uuid, profile } = authentication.getProfile;
+    try {
+      await axios
+        .post("/share/my-notes", {
+          title,
+          detail,
+          uuid,
+          fileUrl: fileUploadPdf ? await addFile(fileBlob, fileUploadPdf.name): "",
+          firstname: profile.firstname,
+          lastname: profile.lastname,
+        })
+        .then(() => {
+          navigation.navigate("Notes");
+        });
+    } catch (e) {
+      console.error(e);
     }
   };
 
   return (
     <View style={styles.container}>
-      {/* <DrawCanva/> */}
       <ScrollView
         swipeThreshold={10}
         scrollEventThrottle={200}
@@ -73,7 +98,16 @@ export default observer(function New_note({ navigation: { navigate } }) {
                   onChangeText={(detail) => setDetail(detail)}
                   secureTextEntry
                 />
-                <PrimaryButton goTo={() => create_note()}>บันทึกโน็ต</PrimaryButton>
+                <Button
+                  icon="camera"
+                  mode="contained"
+                  title={fileUploadPdf ? fileUploadPdf.name : 'add pdf'}
+                  onPress={() => getPdf()}
+                >
+                </Button>
+                <PrimaryButton goTo={() => create_note()}>
+                  บันทึกโน็ต
+                </PrimaryButton>
               </View>
             </Card.Content>
           </Card>
@@ -85,11 +119,11 @@ export default observer(function New_note({ navigation: { navigate } }) {
 
 const styles = StyleSheet.create({
   card: {
-    paddingVertical: 44
+    paddingVertical: 44,
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     backgroundColor: "#FFF",
   },
   formContainer: {
@@ -118,6 +152,6 @@ const styles = StyleSheet.create({
   textAbove: {
     color: "#4D3B9B",
     marginBottom: 10,
-    fontFamily: 'Roboto_500Medium'
-  }
+    fontFamily: "Roboto_500Medium",
+  },
 });

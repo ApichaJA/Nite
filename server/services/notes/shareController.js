@@ -25,8 +25,10 @@ const myNote = async (req, res) => {
 const createNote = async (req, res) => {
   try {
     const data = await new_note(req.body)
+    console.log(data)
     res.send(data)
   } catch (e) {
+    console.log(e)
     res.status(500).send(e)
   }
 }

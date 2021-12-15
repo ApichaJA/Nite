@@ -28,6 +28,8 @@ import NoteScreen from "./screens/note/index";
 import EditNoteScreen from "./screens/note/edit";
 import FavoriteScreen from "./screens/favorite";
 
+// import ReadPdf from "./screens/note/readPdf";
+
 import { observer } from "mobx-react-lite";
 import { authentication } from "./stores/Auth.service";
 import { favNote } from "./stores/Fav.service";
@@ -40,7 +42,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import axios from "axios";
 
-axios.defaults.baseURL = "http://192.168.1.7:5001";
+axios.defaults.baseURL = "http://192.168.1.129:5001";
 
 export default observer(function App() {
   const [userToken, setUserToken] = useState(null);
@@ -67,7 +69,7 @@ export default observer(function App() {
   const addFav = () => {
     // const { data } = await axios.get(`/favorite/my-favorite?nid=${}&uuid=${authentication.getProfile.account.uuid}`)
     // return data
-  }
+  };
 
   const isHasFav = favNote.getNote.some(({ nid }) => nid === note.getNote.nid)
 
@@ -80,16 +82,18 @@ export default observer(function App() {
 
   const AuthenticatedTabs = () => {
     return (
-      <Tab.Navigator
-        barStyle={{ backgroundColor: '#4D3B9B' }}
-      >
+      <Tab.Navigator barStyle={{ backgroundColor: "#4D3B9B" }}>
         <Tab.Screen
           name="Notes"
           component={HomeScreen}
           options={{
-            title: 'Notes',
+            title: "Notes",
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="note-multiple" color={color} size={26} />
+              <MaterialCommunityIcons
+                name="note-multiple"
+                color={color}
+                size={26}
+              />
             ),
           }}
         />
@@ -97,7 +101,7 @@ export default observer(function App() {
           name="Create Note"
           component={CreateNoteScreen}
           options={{
-            title: 'Create Note',
+            title: "Create Note",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="plus" color={color} size={26} />
             ),
@@ -107,15 +111,25 @@ export default observer(function App() {
           name="Favorite Notes"
           component={FavoriteScreen}
           options={{
-            title: 'Favorite Notes',
+            title: "Favorite Notes",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="star" color={color} size={26} />
             ),
           }}
         />
+        {/* <Tab.Screen
+          name="ReadPdf"
+          component={ReadPdf}
+          options={{
+            title: "ReadPdf",
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="star" color={color} size={26} />
+            ),
+          }}
+        /> */}
       </Tab.Navigator>
-    )
-  }
+    );
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -183,6 +197,6 @@ export default observer(function App() {
           }
         </Stack.Navigator>
       </NavigationContainer>
-    )
+    );
   }
 });

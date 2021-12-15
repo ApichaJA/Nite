@@ -35,8 +35,8 @@ export default observer(function View_Note({
           alert("Update Successfully");
 
           setTimeout(() => {
-            navigation.navigate('View Note', route.params)
-          }, 2000)
+            navigation.navigate("View Note", route.params);
+          }, 2000);
         });
     } catch (e) {
       console.error(e);
@@ -71,12 +71,28 @@ export default observer(function View_Note({
                 <TextInput
                   label="รายละเอียดโน็ต"
                   multiline={true}
-                  returnKeyLabel='emergency-call'
+                  returnKeyLabel="emergency-call"
                   value={detail}
                   style={styles.inputAreaStyles}
                   onChangeText={(detail) => setDetail(detail)}
                   secureTextEntry
                 />
+                {route.params.item.filePdf ? (
+                  <View style={{marginBottom: 20}}>
+                    <Text style={styles.textAbove}>Your Pdf</Text>
+                    {/* <Text>{ route.params.item.filePdf }</Text> */}
+                    <TextInput
+                  label="Url"
+                  multiline={true}
+                  returnKeyLabel="emergency-call"
+                  value={route.params.item.filePdf}
+                  // style={styles.inputAreaStyles}
+                  secureTextEntry
+                />
+                  </View>
+                ) : (
+                  false
+                )}
                 <PrimaryButton goTo={() => edit_note()}>
                   บันทึกโน็ต
                 </PrimaryButton>
@@ -91,7 +107,7 @@ export default observer(function View_Note({
 
 const styles = StyleSheet.create({
   card: {
-    paddingVertical: 44
+    paddingVertical: 44,
   },
   container: {
     flex: 1,
@@ -123,6 +139,6 @@ const styles = StyleSheet.create({
   textAbove: {
     color: "#4D3B9B",
     marginBottom: 10,
-    fontFamily: 'Roboto_500Medium'
-  }
+    fontFamily: "Roboto_500Medium",
+  },
 });
