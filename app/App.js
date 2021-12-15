@@ -29,6 +29,8 @@ import NoteScreen from "./screens/note/index";
 import EditNoteScreen from "./screens/note/edit";
 import FavoriteScreen from "./screens/favorite";
 
+// import ReadPdf from "./screens/note/readPdf";
+
 import { observer } from "mobx-react-lite";
 import { authentication } from "./stores/Auth.service";
 
@@ -47,10 +49,10 @@ export default observer(function App() {
 
   const [navIndex, setNavIndex] = React.useState(0);
   const [routes] = useState([
-    { key: 'home', title: 'Home', icon: 'home' },
-    { key: 'newNote', title: 'Create Note', icon: 'plus' },
-    { key: 'favNotes', title: 'Favorite Notes', icon: 'star' }
-  ])
+    { key: "home", title: "Home", icon: "home" },
+    { key: "newNote", title: "Create Note", icon: "plus" },
+    { key: "favNotes", title: "Favorite Notes", icon: "star" },
+  ]);
   const [isPress, setIsPress] = useState(false);
 
   let [fontsLoaded] = useFonts({
@@ -69,20 +71,17 @@ export default observer(function App() {
   const renderScene = BottomNavigation.SceneMap({
     home: HomeScreen,
     newNote: CreateNoteScreen,
-    favNotes: FavoriteScreen
-  })
+    favNotes: FavoriteScreen,
+  });
 
   const addFav = async () => {
     // const { data } = await axios.get(`/favorite/my-favorite?nid=${}&uuid=${authentication.getProfile.account.uuid}`)
-
     // return data
-  }
+  };
 
   useEffect(() => {
     const token = authentication.getProfile.accessToken;
     token && setUserToken(token);
-
-
   }, []);
 
   const Stack = createNativeStackNavigator();
@@ -90,16 +89,18 @@ export default observer(function App() {
 
   const AuthenticatedTabs = () => {
     return (
-      <Tab.Navigator
-        barStyle={{ backgroundColor: '#4D3B9B' }}
-      >
+      <Tab.Navigator barStyle={{ backgroundColor: "#4D3B9B" }}>
         <Tab.Screen
           name="Notes"
           component={HomeScreen}
           options={{
-            title: 'Notes',
+            title: "Notes",
             tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="note-multiple" color={color} size={26} />
+              <MaterialCommunityIcons
+                name="note-multiple"
+                color={color}
+                size={26}
+              />
             ),
           }}
         />
@@ -107,7 +108,7 @@ export default observer(function App() {
           name="Create Note"
           component={CreateNoteScreen}
           options={{
-            title: 'Create Note',
+            title: "Create Note",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="plus" color={color} size={26} />
             ),
@@ -117,15 +118,25 @@ export default observer(function App() {
           name="Favorite Notes"
           component={FavoriteScreen}
           options={{
-            title: 'Favorite Notes',
+            title: "Favorite Notes",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="star" color={color} size={26} />
             ),
           }}
         />
+        {/* <Tab.Screen
+          name="ReadPdf"
+          component={ReadPdf}
+          options={{
+            title: "ReadPdf",
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons name="star" color={color} size={26} />
+            ),
+          }}
+        /> */}
       </Tab.Navigator>
-    )
-  }
+    );
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -133,66 +144,83 @@ export default observer(function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator initialRouteName={!userToken ? "Nite" : "Home"}>
-          {
-            !authentication.getProfile.accessToken ? (
-              <Stack.Group screenOptions={{ headerTintColor: '#fefeff', headerStyle: { backgroundColor: '#4D3B9B' }, headerTitleStyle: { color: '#fefeff' }, headerBackTitleStyle: { color: '#fefeff' } }}>
-                <Stack.Screen
-                  options={{
-                    headerShown: false,
-                    animationTypeForReplace: isSignOut ? "pop" : "push",
-                  }}
-                  name="Nite"
-                  component={LandingScreen}
-                />
-                <Stack.Screen
-                  options={{
-                    headerShown: false,
-                  }}
-                  name="Login"
-                  component={LoginScreen}
-                />
-                <Stack.Screen
-                  options={{
-                    headerShown: false,
-                  }}
-                  name="Register"
-                  component={RegisterScreen}
-                />
-                <Stack.Screen
-                  options={{
-                    headerShown: false,
-                  }}
-                  name="Home"
-                  component={HomeScreen}
-                />
-                <Stack.Screen name="View Note" component={NoteScreen} />
-              </Stack.Group>
-            ) : (
-              <Stack.Group screenOptions={{ headerTintColor: '#fefeff', headerStyle: { backgroundColor: '#4D3B9B' }, headerTitleStyle: { color: '#fefeff' }, headerBackTitleStyle: { color: '#fefeff' } }}>
-                <Stack.Screen
-                  name="Home"
-                  component={AuthenticatedTabs}
-                />
-                <Stack.Screen name="View Note"
-                  component={NoteScreen}
-                  options={{
-                    headerRight: ({ color }) => (
-                      <TouchableOpacity onPress={() => setIsPress(!isPress)}>
-                        <MaterialCommunityIcons
-                          name="star"
-                          color={!isPress ? "#fefeff" : 'yellow'}
-                          size={26}
-                        />
-                      </TouchableOpacity>
-                    )
-                  }}
-                />
-                <Stack.Screen name="Edit Note" component={EditNoteScreen} />
-              </Stack.Group>
-            )
-          }
+          {!authentication.getProfile.accessToken ? (
+            <Stack.Group
+              screenOptions={{
+                headerTintColor: "#fefeff",
+                headerStyle: { backgroundColor: "#4D3B9B" },
+                headerTitleStyle: { color: "#fefeff" },
+                headerBackTitleStyle: { color: "#fefeff" },
+              }}
+            >
+              <Stack.Screen
+                options={{
+                  headerShown: false,
+                  animationTypeForReplace: isSignOut ? "pop" : "push",
+                }}
+                name="Nite"
+                component={LandingScreen}
+              />
+              <Stack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="Login"
+                component={LoginScreen}
+              />
+              <Stack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="Register"
+                component={RegisterScreen}
+              />
+              {/* <Stack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="ReadPdf"
+                component={ReadPdf}
+              /> */}
+              <Stack.Screen
+                options={{
+                  headerShown: false,
+                }}
+                name="Home"
+                component={HomeScreen}
+              />
+              <Stack.Screen name="View Note" component={NoteScreen} />
+            </Stack.Group>
+          ) : (
+            <Stack.Group
+              screenOptions={{
+                headerTintColor: "#fefeff",
+                headerStyle: { backgroundColor: "#4D3B9B" },
+                headerTitleStyle: { color: "#fefeff" },
+                headerBackTitleStyle: { color: "#fefeff" },
+              }}
+            >
+              <Stack.Screen name="Home" component={AuthenticatedTabs} />
+              <Stack.Screen
+                name="View Note"
+                component={NoteScreen}
+                options={{
+                  headerRight: ({ color }) => (
+                    <TouchableOpacity onPress={() => setIsPress(!isPress)}>
+                      <MaterialCommunityIcons
+                        name="star"
+                        color={!isPress ? "#fefeff" : "yellow"}
+                        size={26}
+                      />
+                    </TouchableOpacity>
+                  ),
+                }}
+              />
+              <Stack.Screen name="Edit Note" component={EditNoteScreen} />
+            </Stack.Group>
+          )}
         </Stack.Navigator>
       </NavigationContainer>
-    )
+    );
   }
 });

@@ -11,9 +11,8 @@ const favoriteAPI = require('./services/favorite/favoriteAPI')
 const app = express()
 app.use(cors())
 
-app.use(express.json()) // for parsing application/json
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb', extended: true}));
 // API Endpoints
 app.use('/api/v1', routes)
 app.use('/auth', authAPI)

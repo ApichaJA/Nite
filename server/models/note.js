@@ -14,6 +14,10 @@ const NoteSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    filePdf: {
+      type: String,
+      required: false,
+    },
     author: {
       uuid: {
         type: String,
@@ -28,11 +32,6 @@ const NoteSchema = new mongoose.Schema(
         require: true,
       }
     },
-    url: {
-      type: String,
-      required: true,
-    },
-
   },
   { timestamps: true }
 );

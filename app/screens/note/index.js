@@ -52,9 +52,9 @@ export default observer(function View_Note({
   }, [route.params.item]);
   const GetComment = () => {
     const notecomment = pullComment.map((item, index) => {
-      const splitTime = item.createdAt.split("T")[1].split(".")
-      const day = item.createdAt.split("T")[0] || "-"
-      const time = item.createdAt.split("T")[1].split(".")[0] || "-"
+      const splitTime = item.createdAt.split("T")[1].split(".");
+      const day = item.createdAt.split("T")[0] || "-";
+      const time = item.createdAt.split("T")[1].split(".")[0] || "-";
       return (
         <View
           key={index}
@@ -110,6 +110,23 @@ export default observer(function View_Note({
               <View style={styles.textAreaStyles}>
                 <Text>{item.detail}</Text>
               </View>
+              {item.filePdf ? (
+                <View>
+                  <Title style={styles.pageTitle}>Pdf</Title>
+                  {/* <Text>{item.filePdf}</Text> */}
+                  <TextInput
+                  label="Url"
+                  multiline={true}
+                  returnKeyLabel="emergency-call"
+                  value={item.filePdf}
+                  // style={styles.inputAreaStyles}
+                  secureTextEntry
+                />
+                  {/* <Button title="open" onPress={(e) => alert(1)}></Button> */}
+                </View>
+              ) : (
+                false
+              )}
               <Text style={[styles.textAbove, { marginTop: 10 }]}>แชร์</Text>
               <View style={{ flexDirection: "row", marginBottom: 30 }}>
                 <Avatar.Icon
@@ -197,7 +214,7 @@ const styles = StyleSheet.create({
   },
   authorGroup: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   textAbove: {
     marginBottom: 10,
@@ -207,6 +224,6 @@ const styles = StyleSheet.create({
   inputStyles: {
     backgroundColor: "#F1F0F9",
     marginBottom: 40,
-    minHeight: 150
+    minHeight: 150,
   },
 });
