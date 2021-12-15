@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Card, Title, Avatar, TextInput } from "react-native-paper";
 import { observer } from "mobx-react-lite";
 import { authentication } from "../../stores/Auth.service";
+import { note } from "../../stores/Note.service";
 import axios from "axios";
 
 import PrimaryButton from "../../components/utils/PrimaryButton";
@@ -48,7 +49,9 @@ export default observer(function View_Note({
     const getComment = await axios.get(
       `/service-comment/comment?uuid=${item.author.uuid}&nid=${item.nid}`
     );
+
     setPullComment(getComment.data);
+
   }, [route.params.item]);
   const GetComment = () => {
     const notecomment = pullComment.map((item, index) => {
