@@ -58,7 +58,7 @@ export default observer(function New_note({ navigation: { navigate } }) {
           title,
           detail,
           uuid,
-          fileUrl: fileBlob? await addFile(fileBlob, fileUploadPdf.name): "",
+          fileUrl: fileUploadPdf ? await addFile(fileBlob, fileUploadPdf.name): "",
           firstname: profile.firstname,
           lastname: profile.lastname,
         })

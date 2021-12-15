@@ -68,7 +68,9 @@ export default observer(function Home({ navigation: { navigate } }) {
     const token = authentication.getProfile
     token && setMyToken(token.accessToken)
 
-    getNotes()
+    setInterval(() => {
+      getNotes()
+    }, 1000);
 
     if (token.accessToken) {
       getNotes(token.uuid)
