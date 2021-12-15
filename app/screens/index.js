@@ -6,6 +6,7 @@ import { Card, Title, Paragraph, FAB } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { observer } from 'mobx-react-lite'
 import { authentication } from '../stores/Auth.service'
+import { note } from "../stores/Note.service";
 import axios from 'axios';
 
 import Carousel from 'react-native-snap-carousel';
@@ -35,7 +36,7 @@ export default observer(function Home({ navigation: { navigate } }) {
           paddingVertical: 30,
           marginRight: 25,
         }}
-        onPress={() => authentication.getProfile.uuid === item.author.uuid ? navigate('Edit Note', { item }) : navigate('View Note', { item })}
+        onPress={() => authentication.getProfile.uuid === item.author.uuid ? navigate('Edit Note', { item }) : (navigate('View Note', { item }), note.setNote(item))}
       >
         <Text numberOfLines={2} style={{ fontSize: 28, fontFamily: 'Prompt_700Bold' }}>{item.title}</Text>
         <Text numberOfLines={2} style={{ fontSize: 16, paddingVertical: 8, fontFamily: 'Prompt_400Regular', color: '#8880cc' }}>
@@ -67,13 +68,12 @@ export default observer(function Home({ navigation: { navigate } }) {
     const token = authentication.getProfile
     token && setMyToken(token.accessToken)
 
-    setInterval(() => {
-      getNotes()
+    getNotes()
 
-      if (token.accessToken) {
-        getNotes(token.uuid)
-      }
-    }, 1000)
+    if (token.accessToken) {
+      getNotes(token.uuid)
+    }
+
 
   }, [getNotes, myToken])
 

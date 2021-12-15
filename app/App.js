@@ -1,7 +1,6 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import AppLoading from "expo-app-loading";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { BottomNavigation } from "react-native-paper";
 
 import {
@@ -31,6 +30,8 @@ import FavoriteScreen from "./screens/favorite";
 
 import { observer } from "mobx-react-lite";
 import { authentication } from "./stores/Auth.service";
+import { favNote } from "./stores/Fav.service";
+import { note } from "./stores/Note.service";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -39,18 +40,12 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import axios from "axios";
 
-axios.defaults.baseURL = "http://192.168.0.101:5001";
+axios.defaults.baseURL = "http://192.168.1.7:5001";
 
 export default observer(function App() {
   const [userToken, setUserToken] = useState(null);
   const [isSignOut, setIsSignOut] = useState(true);
 
-  const [navIndex, setNavIndex] = React.useState(0);
-  const [routes] = useState([
-    { key: 'home', title: 'Home', icon: 'home' },
-    { key: 'newNote', title: 'Create Note', icon: 'plus' },
-    { key: 'favNotes', title: 'Favorite Notes', icon: 'star' }
-  ])
   const [isPress, setIsPress] = useState(false);
 
   let [fontsLoaded] = useFonts({
@@ -66,27 +61,22 @@ export default observer(function App() {
     Roboto_700Bold,
   });
 
-  const renderScene = BottomNavigation.SceneMap({
-    home: HomeScreen,
-    newNote: CreateNoteScreen,
-    favNotes: FavoriteScreen
-  })
+  const Stack = createNativeStackNavigator();
+  const Tab = createMaterialBottomTabNavigator();
 
-  const addFav = async () => {
+  const addFav = () => {
     // const { data } = await axios.get(`/favorite/my-favorite?nid=${}&uuid=${authentication.getProfile.account.uuid}`)
-
     // return data
   }
+
+  const isHasFav = favNote.getNote.some(({ nid }) => nid === note.getNote.nid)
 
   useEffect(() => {
     const token = authentication.getProfile.accessToken;
     token && setUserToken(token);
 
-
-  }, []);
-
-  const Stack = createNativeStackNavigator();
-  const Tab = createMaterialBottomTabNavigator();
+    addFav()
+  });
 
   const AuthenticatedTabs = () => {
     return (
@@ -177,10 +167,10 @@ export default observer(function App() {
                   component={NoteScreen}
                   options={{
                     headerRight: ({ color }) => (
-                      <TouchableOpacity onPress={() => setIsPress(!isPress)}>
+                      <TouchableOpacity onPress={() => (setIsPress(isHasFav ? false : true), favNote.setNote(note.getNote))}>
                         <MaterialCommunityIcons
                           name="star"
-                          color={!isPress ? "#fefeff" : 'yellow'}
+                          color={!isHasFav ? "#fefeff" : 'yellow'}
                           size={26}
                         />
                       </TouchableOpacity>
