@@ -11,10 +11,6 @@ export default function login({ navigation: { navigate } }) {
     <View style={styles.container}>
       <BoxContainer title="Login">
         <FormBox btnText='เข้าสู่ระบบ' />
-        <Button style={styles.btn_forget}>
-          <Text style={styles.forgetpass}>ลืมรหัสผ่าน?</Text>
-        </Button>
-
       </BoxContainer>
     </View>
   )
