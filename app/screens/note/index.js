@@ -106,9 +106,9 @@ export default observer(function View_Note({
                   size={42}
                   label={item.author.firstname[0] + item.author.lastname[0]}
                 />
-                <Text style={styles.noteAuthor}>
+                {/* <Text style={styles.noteAuthor}>
                   By, {item.author.firstname} {item.author.lastname}
-                </Text>
+                </Text> */}
               </View>
               <View style={styles.textAreaStyles}>
                 <Text>{item.detail}</Text>
